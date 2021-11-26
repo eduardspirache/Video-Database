@@ -8,7 +8,8 @@ package common;
 public final class Constants {
     private Constants() {
     }
-
+    public static final String ASCENDING = "asc";
+    public static final String DESCENDING = "desc";
     public static final String DATABASE = "database";
     public static final String ACTORS = "actors";
     public static final String MOVIES = "movies";
