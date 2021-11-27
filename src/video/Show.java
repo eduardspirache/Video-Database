@@ -7,6 +7,8 @@ public abstract class Show {
     private final int year;
     private final ArrayList<String> cast;
     private final ArrayList<String> genres;
+    private int rating;
+    private int favorite;
 
     // Constructor
     public Show(final String title, final int year,
@@ -16,6 +18,8 @@ public abstract class Show {
         this.year = year;
         this.cast = cast;
         this.genres = genres;
+        this.rating = 0;
+        this.favorite = 0;
     }
 
     // Getters
@@ -34,5 +38,19 @@ public abstract class Show {
 
     public final ArrayList<String> getGenres() {
         return genres;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public int getFavorite() {
+        return favorite;
+    }
+
+    // Setters
+
+    public void incrFavorite() {
+        this.favorite += 1;
     }
 }

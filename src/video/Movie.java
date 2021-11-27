@@ -27,4 +27,8 @@ public class Movie extends Show {
                 + super.getCast() + " }\n"
                 + "genres {" + super.getGenres() + " }\n ";
     }
+
+    // Query helpers
+
+    
 }

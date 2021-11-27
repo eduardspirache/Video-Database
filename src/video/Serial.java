@@ -4,8 +4,9 @@ import entertainment.Season;
 import fileio.ShowInput;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Serial extends ShowInput {
+public class Serial extends Show {
     private final int numberOfSeasons;
     private final ArrayList<Season> seasons;
 
@@ -36,5 +37,21 @@ public class Serial extends ShowInput {
                 + super.getGenres() + " }\n "
                 + " numberSeason= " + numberOfSeasons
                 + ", seasons=" + seasons + "\n\n" + '}';
+    }
+
+    // Queries
+
+    @Override
+    public double getRating() {
+        double avg = 0;
+        int count = 0;
+        for (var season : seasons) {
+            List<Double> ratings = season.getRatings();
+            for (Double rating : ratings) {
+                avg += rating;
+                count++;
+            }
+        }
+        return avg / (double)count;
     }
 }
