@@ -1,14 +1,18 @@
 package video;
 
+import user.User;
+import user.UserList;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Show {
     private final String title;
     private final int year;
     private final ArrayList<String> cast;
     private final ArrayList<String> genres;
-    private int rating;
-    private int favorite;
+    private double rating;
 
     // Constructor
     public Show(final String title, final int year,
@@ -18,8 +22,7 @@ public abstract class Show {
         this.year = year;
         this.cast = cast;
         this.genres = genres;
-        this.rating = 0;
-        this.favorite = 0;
+        this.rating = 0.0;
     }
 
     // Getters
@@ -44,13 +47,38 @@ public abstract class Show {
         return rating;
     }
 
-    public int getFavorite() {
-        return favorite;
+    // Setters
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
-    // Setters
+    // Methods for Queries
 
-    public void incrFavorite() {
-        this.favorite += 1;
+    // Iterates through the user list and checks
+    // how many users have the show set as favorite
+    public int getFavorite(UserList userList) {
+        int count = 0;
+        for (User user : userList.getUserList())
+            for (var movie : user.getFavoriteMovies())
+                if (movie.equals(this.getTitle()))
+                    count++;
+        return count;
+    }
+
+    // Iterates through the user list and checks
+    // if the show is present in the user's history.
+    // If it is, it increments the number of views with the
+    // number of times the user watched the show
+    public int getViews(UserList userList) {
+        AtomicInteger noOfViews = new AtomicInteger();
+        for (var user : userList.getUserList()) {
+            user.getHistory().forEach((a, n) -> {
+                if(a.equals(this.getTitle())) {
+                    noOfViews.addAndGet(n);
+                }
+            });
+        }
+        return noOfViews.get();
     }
 }
+

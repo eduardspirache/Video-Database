@@ -1,12 +1,17 @@
 package main;
 
+import actor.ActorList;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
+import database.Database;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
 import org.json.simple.JSONArray;
+import user.UserList;
+import video.MovieList;
+import video.SerialList;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +76,12 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
+        UserList userList = new UserList(Database.getUsers(input));
+        ActorList actorList = new ActorList(Database.getActors(input));
+        MovieList movieList = new MovieList(Database.getMovies(input));
+        SerialList serialList = new SerialList(Database.getSerials(input));
+
+
 
         fileWriter.closeJSON(arrayResult);
     }

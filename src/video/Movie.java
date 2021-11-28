@@ -1,6 +1,9 @@
 package video;
 
+import user.User;
+
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Movie extends Show {
     private final int duration;
@@ -27,8 +30,6 @@ public class Movie extends Show {
                 + super.getCast() + " }\n"
                 + "genres {" + super.getGenres() + " }\n ";
     }
-
-    // Query helpers
-
+    // Methods for Queries
     
 }

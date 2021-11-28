@@ -1,27 +1,27 @@
 package actor;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import static common.Constants.ASCENDING;
 
 public class ActorList {
-    private ArrayList<Actor> actorList;
+    private List<Actor> actorList;
 
     // Constructor
-    public ActorList(ArrayList<Actor> actorList) {
+    public ActorList(List<Actor> actorList) {
         this.actorList = actorList;
     }
 
     // Getter
-    public ArrayList<Actor> getActorList() {
+    public List<Actor> getActorList() {
         return actorList;
     }
 
     // Queries
-    public ArrayList<Actor> sortByRating(String sortType) {
-        ArrayList<Actor> sorted = actorList;
+    public List<Actor> sortByRating(String sortType) {
+        List<Actor> sorted = actorList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingDouble(Actor::getRating));
         } else {
@@ -30,9 +30,9 @@ public class ActorList {
         return sorted;
     }
 
-    public ArrayList<Actor> sortByAwards(String sortType,
-                                         ArrayList<String> awards) {
-        ArrayList<Actor> sorted = actorList;
+    public List<Actor> sortByAwards(String sortType,
+                                         List<String> awards) {
+        List<Actor> sorted = actorList;
         // We remove the actors that haven't won the prizes the user searched for
         sorted.removeIf(a -> a.noOfAwards(awards) == 0);
         if (sortType.equals(ASCENDING)) {
@@ -44,9 +44,9 @@ public class ActorList {
         return sorted;
     }
 
-    public ArrayList<Actor> sortByDescription(String sortType,
-                                              ArrayList<String> words) {
-        ArrayList<Actor> sorted = actorList;
+    public List<Actor> sortByDescription(String sortType,
+                                              List<String> words) {
+        List<Actor> sorted = actorList;
         sorted.removeIf(a -> !a.filterDescription(words));
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparing(Actor::getName));

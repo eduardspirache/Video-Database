@@ -1,6 +1,7 @@
 package actor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -74,7 +75,7 @@ public final class Actor {
     // Returns the number of searched awards
     // if it doesn't contain all the awards we searched
     // it returns zero
-    public int noOfAwards(ArrayList<String> searchedAwards) {
+    public int noOfAwards(List<String> searchedAwards) {
         AtomicInteger count = new AtomicInteger();
         AtomicInteger matchingAwards = new AtomicInteger();
         for (var award : searchedAwards) {
@@ -92,7 +93,7 @@ public final class Actor {
         return 0;
     }
 
-    public boolean filterDescription(ArrayList<String> words) {
+    public boolean filterDescription(List<String> words) {
         int count = 0;
         for (String word : words) {
             if (careerDescription.toLowerCase()
