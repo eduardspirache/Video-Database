@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Movie extends Show {
     private final int duration;
+    private ArrayList<Double> rating;
 
     // Constructor
     public Movie(final String title, final ArrayList<String> cast,
@@ -14,11 +15,18 @@ public class Movie extends Show {
                  final int duration) {
         super(title, year, cast, genres);
         this.duration = duration;
+        this.rating = null;
     }
 
-    // Getter and toString
+    // Getters
     public int getDuration() {
         return duration;
+    }
+
+    // Setters and toString
+    public void setRating(double rating) {
+        this.rating.add(rating);
+        super.setFinalRating(rating);
     }
 
     @Override
@@ -30,6 +38,18 @@ public class Movie extends Show {
                 + super.getCast() + " }\n"
                 + "genres {" + super.getGenres() + " }\n ";
     }
-    // Methods for Queries
-    
+
+    ///////////////////////////////// Methods /////////////////////////////////
+
+    public double getRating() {
+        if (this.rating == null)
+            return 0;
+
+        double avg = 0;
+        for (double rate : rating)
+            avg += rate;
+
+        return avg / (double) rating.size();
+    }
+
 }

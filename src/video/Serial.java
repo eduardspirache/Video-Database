@@ -29,6 +29,11 @@ public class Serial extends Show {
         return seasons;
     }
 
+    public void setRating() {
+        super.setFinalRating(this.getRating());
+    }
+
+
     @Override
     public String toString() {
         return "SerialInputData{" + " title= "
@@ -40,10 +45,9 @@ public class Serial extends Show {
                 + ", seasons=" + seasons + "\n\n" + '}';
     }
 
-    // Methods for Queries
+    ///////////////////////////////// Methods /////////////////////////////////
 
     // Calculates the rating for all the seasons
-    @Override
     public double getRating() {
         double avg = 0;
         int count = 0;
@@ -54,14 +58,13 @@ public class Serial extends Show {
                 count++;
             }
         }
-        this.setRating(avg / (double)count);
-        return avg / (double)count;
+        return avg / (double) count;
     }
 
     // Returns the duration of all seasons
     public int getDuration() {
         int duration = 0;
-        for (var season: seasons)
+        for (var season : seasons)
             duration += season.getDuration();
         return duration;
     }

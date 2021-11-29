@@ -20,9 +20,8 @@ public class SerialList {
         return serialList;
     }
 
-    // Queries
-
-    public List<Serial> sortByRating(String sortType) {
+    //////////////////////////////// Queries ////////////////////////////////
+    public List<Serial> sortByRating(int n, String sortType) {
         List<Serial> sorted = serialList;
         sorted.removeIf(a -> a.getRating() == 0);
         if (sortType.equals(ASCENDING)) {
@@ -30,37 +29,37 @@ public class SerialList {
         } else {
             sorted.sort((a, b) -> Double.compare(b.getRating(), a.getRating()));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
-    public List<Serial> sortByFavorite(String sortType, UserList userList) {
+    public List<Serial> sortByFavorite(int n, String sortType, UserList userList) {
         List<Serial> sorted = serialList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getFavorite(userList), a.getFavorite(userList)));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
-    public List<Serial> sortByDuration(String sortType) {
+    public List<Serial> sortByDuration(int n, String sortType) {
         List<Serial> sorted = serialList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(Serial::getDuration));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getDuration(), a.getDuration()));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
-    public List<Serial> sortByViews(String sortType, UserList userList) {
+    public List<Serial> sortByViews(int n, String sortType, UserList userList) {
         List<Serial> sorted = serialList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getViews(userList)));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getViews(userList), a.getViews(userList)));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
 }

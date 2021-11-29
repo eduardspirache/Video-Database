@@ -20,8 +20,8 @@ public class MovieList {
         return movieList;
     }
 
-    // Queries
-    public List<Movie> sortByRating(String sortType) {
+    //////////////////////////////// Queries ////////////////////////////////
+    public List<Movie> sortByRating(int n, String sortType) {
         List<Movie> sorted = movieList;
         sorted.removeIf(a -> a.getRating() == 0);
         if (sortType.equals(ASCENDING)) {
@@ -29,36 +29,36 @@ public class MovieList {
         } else {
             sorted.sort((a, b) -> Double.compare(b.getRating(), a.getRating()));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
-    public List<Movie> sortByFavorite(String sortType, UserList userList) {
+    public List<Movie> sortByFavorite(int n, String sortType, UserList userList) {
         List<Movie> sorted = movieList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getFavorite(userList), a.getFavorite(userList)));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
-    public List<Movie> sortByDuration(String sortType) {
+    public List<Movie> sortByDuration(int n, String sortType) {
         List<Movie> sorted = movieList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(Movie::getDuration));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getDuration(), a.getDuration()));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 
-    public List<Movie> sortByViews(String sortType, UserList userList) {
+    public List<Movie> sortByViews(int n, String sortType, UserList userList) {
         List<Movie> sorted = movieList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getViews(userList)));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getViews(userList), a.getViews(userList)));
         }
-        return sorted;
+        return sorted.subList(0, n - 1);
     }
 }
