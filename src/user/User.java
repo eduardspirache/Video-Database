@@ -71,7 +71,6 @@ public class User {
         } else {
             return "error -> " + show + " is already in favourite list";
         }
-
     }
 
     public String view(String show) {

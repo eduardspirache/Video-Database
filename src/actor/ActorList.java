@@ -1,5 +1,6 @@
 package actor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -19,7 +20,24 @@ public class ActorList {
         return actorList;
     }
 
-    // Queries
+    //////////////////////////////// Queries ////////////////////////////////
+    public String sortQuery(int n, String criteria, String sortType,
+                            List<String> awards, List<String> words) {
+        List<Actor> tempList;
+        if (criteria.equals("average"))
+            tempList = sortByRating(sortType);
+        else if (criteria.equals("awards"))
+            tempList = sortByAwards(sortType, awards);
+        else
+            tempList = sortByDescription(sortType, words);
+
+        List<String> output = new ArrayList<>();
+        for (var actor : tempList)
+            output.add(actor.getName());
+
+        return output.subList(0, n - 1).toString();
+    }
+
     public List<Actor> sortByRating(String sortType) {
         List<Actor> sorted = actorList;
         if (sortType.equals(ASCENDING)) {
@@ -31,7 +49,7 @@ public class ActorList {
     }
 
     public List<Actor> sortByAwards(String sortType,
-                                         List<String> awards) {
+                                    List<String> awards) {
         List<Actor> sorted = actorList;
         // We remove the actors that haven't won the prizes the user searched for
         sorted.removeIf(a -> a.noOfAwards(awards) == 0);
@@ -45,7 +63,7 @@ public class ActorList {
     }
 
     public List<Actor> sortByDescription(String sortType,
-                                              List<String> words) {
+                                         List<String> words) {
         List<Actor> sorted = actorList;
         sorted.removeIf(a -> !a.filterDescription(words));
         if (sortType.equals(ASCENDING)) {

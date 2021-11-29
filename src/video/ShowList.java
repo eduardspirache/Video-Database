@@ -99,11 +99,4 @@ public class ShowList {
                         toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
                                 LinkedHashMap::new));
     }
-
-    @Override
-    public String toString() {
-        return "ShowList{" +
-                "showList=" + showList +
-                '}';
-    }
 }

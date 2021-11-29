@@ -21,7 +21,28 @@ public class SerialList {
     }
 
     //////////////////////////////// Queries ////////////////////////////////
-    public List<Serial> sortByRating(int n, String sortType) {
+    public String sortQuery(int n, String criteria, String sortType,
+                            UserList userList, int year, String genre) {
+        List<Serial> tempList;
+
+        if (criteria.equals("ratings")) {
+            tempList = sortByRating(sortType);
+        } else if (criteria.equals("favorite")) {
+            tempList = sortByFavorite(sortType, userList);
+        } else if (criteria.equals("longest")) {
+            tempList = sortByDuration(sortType);
+        } else {
+            tempList = sortByViews(sortType, userList);
+        }
+
+        if (year != 0)
+            tempList.removeIf(a -> a.getYear() != year);
+        if (genre != null)
+            tempList.removeIf(a -> !a.getGenres().contains(genre));
+        return tempList.subList(0, n - 1).toString();
+    }
+
+    public List<Serial> sortByRating(String sortType) {
         List<Serial> sorted = serialList;
         sorted.removeIf(a -> a.getRating() == 0);
         if (sortType.equals(ASCENDING)) {
@@ -29,37 +50,37 @@ public class SerialList {
         } else {
             sorted.sort((a, b) -> Double.compare(b.getRating(), a.getRating()));
         }
-        return sorted.subList(0, n - 1);
+        return sorted;
     }
 
-    public List<Serial> sortByFavorite(int n, String sortType, UserList userList) {
+    public List<Serial> sortByFavorite(String sortType, UserList userList) {
         List<Serial> sorted = serialList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getFavorite(userList), a.getFavorite(userList)));
         }
-        return sorted.subList(0, n - 1);
+        return sorted;
     }
 
-    public List<Serial> sortByDuration(int n, String sortType) {
+    public List<Serial> sortByDuration(String sortType) {
         List<Serial> sorted = serialList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(Serial::getDuration));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getDuration(), a.getDuration()));
         }
-        return sorted.subList(0, n - 1);
+        return sorted;
     }
 
-    public List<Serial> sortByViews(int n, String sortType, UserList userList) {
+    public List<Serial> sortByViews(String sortType, UserList userList) {
         List<Serial> sorted = serialList;
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getViews(userList)));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getViews(userList), a.getViews(userList)));
         }
-        return sorted.subList(0, n - 1);
+        return sorted;
     }
 
 }
