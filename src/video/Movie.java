@@ -15,7 +15,8 @@ public class Movie extends Show {
                  final int duration) {
         super(title, year, cast, genres);
         this.duration = duration;
-        this.rating = null;
+        super.duration = duration;
+        this.rating = new ArrayList<>();
     }
 
     // Getters
@@ -26,7 +27,7 @@ public class Movie extends Show {
     // Setters and toString
     public void setRating(double rating) {
         this.rating.add(rating);
-        super.setFinalRating(rating);
+        super.setRating(this.getRating());
     }
 
     @Override

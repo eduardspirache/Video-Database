@@ -1,6 +1,5 @@
 package user;
 
-import entertainment.Genre;
 import entertainment.Season;
 import video.Movie;
 import video.Serial;
@@ -9,7 +8,7 @@ import video.ShowList;
 
 import java.util.*;
 
-import static common.Constants.DESCENDING;
+import static common.Constants.*;
 
 public class User {
     private final String username;
@@ -52,6 +51,7 @@ public class User {
                 + history + ", favoriteMovies="
                 + favoriteMovies + '}';
     }
+
     //////////////////////////////// Queries ////////////////////////////////
     public int getCountRatings() {
         return ratedMovies.size();
@@ -106,7 +106,7 @@ public class User {
 
             // We retrieve the season from the list of seasons
             List<Season> seasons = serial.getSeasons();
-            Season toRate = seasons.get(season);
+            Season toRate = seasons.get(season - 1);
 
             // We copy the list, add the rating and then set the original list
             // to the modified list
@@ -129,7 +129,7 @@ public class User {
     }
 
     ///////////////////////////// Recommendations /////////////////////////////
-    public String unseen(ShowList shows) {
+    public String standard(ShowList shows) {
         for (var show : shows.getShowList())
             if (history.containsKey(show.getTitle()))
                 return "StandardRecommendation result: " + show.getTitle();
@@ -145,37 +145,42 @@ public class User {
         return "BestRatedUnseenRecommendation cannot be applied!";
     }
 
-    public String popularVideo(ShowList shows, UserList userList, Genre genres) {
-        Map<String, Integer> top = shows.getPopularGenres(genres, userList);
-        for (String showName : top.keySet())
-            if (!history.containsKey(showName))
-                return "PopularRecommendation result: " + showName;
+    public String popularVideo(ShowList shows, UserList userList) {
+        if (getSubscriptionType().equals(PREMIUM)) {
+            Map<String, Integer> top = shows.getPopularGenres(userList);
+            for (String showName : top.keySet())
+                if (!history.containsKey(showName))
+                    return "PopularRecommendation result: " + showName;
+        }
         return "PopularRecommendation cannot be applied!";
     }
 
     public String favoriteVideo(ShowList shows, UserList userList) {
-        Map<String, Integer> top = shows.getFavoriteShows(userList);
-        for (String showName : top.keySet())
-            if (!history.containsKey(showName))
-                return "FavoriteRecommendation result: " + showName;
+        if (getSubscriptionType().equals(PREMIUM)) {
+            Map<String, Integer> top = shows.getFavoriteShows(userList);
+            for (String showName : top.keySet())
+                if (!history.containsKey(showName))
+                    return "FavoriteRecommendation result: " + showName;
+        }
         return "FavoriteRecommendation cannot be applied!";
     }
 
-    public String unseenGenre(ShowList shows, Genre genre) {
-        List<Show> showList = shows.sortByRating(DESCENDING);
-        // We remove from the list all the shows
-        // that are from a different genre
-        showList.removeIf(a -> !a.getGenres().contains(genre.toString()));
-        // We remove the shows that the user has already seen
-        showList.removeIf(show -> history.containsKey(show.getTitle()));
+    public String unseenGenre(ShowList shows, String genre) {
+        if (getSubscriptionType().equals(PREMIUM)) {
+            List<Show> showList = shows.sortByRating(DESCENDING);
+            // We remove from the list all the shows
+            // that are from a different genre
+            showList.removeIf(a -> !a.getGenres().contains(genre));
+            // We remove the shows that the user has already seen
+            showList.removeIf(show -> history.containsKey(show.getTitle()));
 
-        if (showList.size() == 0) {
-            return "SearchRecommendation cannot be applied!";
-        } else {
-            List<String> titles = new ArrayList<>();
-            for (var show : showList)
-                titles.add(show.getTitle());
-            return "SearchRecommendation result: " + titles;
+            if (showList.size() != 0) {
+                List<String> titles = new ArrayList<>();
+                for (var show : showList)
+                    titles.add(show.getTitle());
+                return "SearchRecommendation result: " + titles;
+            }
         }
+        return "SearchRecommendation cannot be applied!";
     }
 }

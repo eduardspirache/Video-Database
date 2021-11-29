@@ -1,6 +1,5 @@
 package main;
 
-import actor.Actor;
 import actor.ActorList;
 import checker.Checkstyle;
 import checker.Checker;
@@ -10,10 +9,12 @@ import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import user.User;
 import user.UserList;
 import video.MovieList;
 import video.SerialList;
+import video.Show;
 import video.ShowList;
 
 import java.io.File;
@@ -88,7 +89,7 @@ public final class Main {
         ShowList showList = new ShowList(Database.returnShowList(movieList, serialList));
 
         for (var action : input.getCommands()) {
-            String output;
+            String output = null;
             if (action.getActionType().equals("command")) {
                 if (!action.getType().equals("rating")) {
                     output = userList.simpleCommands(action.getType(),
@@ -112,18 +113,66 @@ public final class Main {
             } else if (action.getActionType().equals("query")) {
                 output = "Query result: ";
                 if (action.getObjectType().equals("actors")) {
-                    List<String> awards = action.getFilters().get(3);
-                    List<String> words = action.getFilters().get(4);
+                    List<String> awards = action.getFilters().get(2);
+                    List<String> words = action.getFilters().get(3);
 
                     output += actorList.sortQuery(action.getNumber(),
                             action.getCriteria(), action.getSortType(),
                             awards, words);
-                } else if(action.getObjectType().equals("movies")) {
+                } else if (action.getObjectType().equals("users")) {
+                    List<User> sortedList = userList.sortByRating(action.getNumber(), action.getSortType());
+                    List<String> outList = new ArrayList<>();
+                    for (var user : sortedList)
+                        outList.add(user.getUsername());
+                    output += outList;
+                } else {
+                    int year = 0;
+                    if (action.getFilters().get(0).get(0) != null)
+                        year = Integer.parseInt(action.getFilters().get(0).get(0));
+                    String genre = null;
+                    if (action.getFilters().get(1).get(0) != null)
+                        genre = action.getFilters().get(1).get(0);
 
+                    List<Show> filteredList = showList
+                            .sortQuery(action.getCriteria(),
+                                    action.getSortType(),
+                                    userList, year, genre);
+
+                    if (action.getObjectType().equals("movies"))
+                        filteredList.removeIf(a -> movieList.getMovieList().contains(a.getTitle()));
+                    else if (action.getObjectType().equals("shows"))
+                        filteredList.removeIf(a -> !serialList.getSerialList().contains(a.getTitle()));
+
+                    if (action.getNumber() <= filteredList.size())
+                        filteredList = filteredList.subList(0, action.getNumber() - 1);
+
+                    // We store the titles in a string list
+                    // to be able to easily print them
+                    List<String> outList = new ArrayList<>();
+                    for (var show : filteredList)
+                        outList.add(show.getTitle());
+                    output += outList;
                 }
+            } else if (action.getActionType().equals("recommendation")) {
+                if (action.getType().equals("standard"))
+                    output = userList.retrieveUser(action.getUsername())
+                            .standard(showList);
+                else if (action.getType().equals("best_unseen"))
+                    output = userList.retrieveUser(action.getUsername())
+                            .bestUnseen(showList);
+                else if (action.getType().equals("popular"))
+                    output = userList.retrieveUser(action.getUsername())
+                            .popularVideo(showList, userList);
+                else if (action.getType().equals("favorite"))
+                    output = userList.retrieveUser(action.getUsername())
+                            .favoriteVideo(showList, userList);
+                else
+                    output = userList.retrieveUser(action.getUsername())
+                            .unseenGenre(showList, action.getGenre());
             }
+            JSONObject outputObj = fileWriter.writeFile(action.getActionId(), "message", output);
+            arrayResult.add(outputObj);
         }
-
         fileWriter.closeJSON(arrayResult);
     }
 }

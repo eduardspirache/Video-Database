@@ -20,18 +20,6 @@ public class UserList {
         return userList;
     }
 
-    //////////////////////////////// Queries ////////////////////////////////
-    public List<User> sortByRating(int n, String sortType) {
-        List<User> sorted = userList;
-        if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingInt(User::getCountRatings));
-        } else {
-            sorted.sort((a, b) -> Integer.compare(b.getCountRatings(),
-                    a.getCountRatings()));
-        }
-        return sorted.subList(0, n - 1);
-    }
-
     //////////////////////////////// Commands ////////////////////////////////
     public String simpleCommands(String command, String userName,
                                  String show) {
@@ -56,6 +44,31 @@ public class UserList {
         for (var user : userList)
             if (user.getUsername().equals(userName))
                 return user.rateSerial(serial, season, rating);
+        return null;
+    }
+
+    //////////////////////////////// Queries ////////////////////////////////
+    public List<User> sortByRating(int n, String sortType) {
+        List<User> sorted = userList;
+        if (sortType.equals(ASCENDING)) {
+            sorted.sort(Comparator.comparingInt(User::getCountRatings));
+        } else {
+            sorted.sort((a, b) -> Integer.compare(b.getCountRatings(),
+                    a.getCountRatings()));
+        }
+
+        if (n <= sorted.size())
+            return sorted.subList(0, n - 1);
+        else
+            return sorted;
+    }
+
+    ///////////////////////////// Recommendations /////////////////////////////
+    public User retrieveUser(String userName) {
+        for (var user : userList) {
+            if (user.getUsername().equals(userName))
+                return user;
+        }
         return null;
     }
 }

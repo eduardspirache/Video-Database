@@ -12,7 +12,8 @@ public abstract class Show {
     private final int year;
     private final ArrayList<String> cast;
     private final ArrayList<String> genres;
-    private double finalRating;
+    protected int duration;
+    private double rating;
 
     // Constructor
     public Show(final String title, final int year,
@@ -22,10 +23,15 @@ public abstract class Show {
         this.year = year;
         this.cast = cast;
         this.genres = genres;
-        this.finalRating = 0.0;
+        this.rating = 0.0;
     }
 
     // Getters
+
+
+    public int getDuration() {
+        return duration;
+    }
 
     public final String getTitle() {
         return title;
@@ -43,13 +49,13 @@ public abstract class Show {
         return genres;
     }
 
-    public double getFinalRating() {
-        return finalRating;
+    public double getRating() {
+        return rating;
     }
 
     // Setters
-    public void setFinalRating(double finalRating) {
-        this.finalRating = finalRating;
+    public void setRating(double finalRating) {
+        this.rating = finalRating;
     }
 
     // Methods for Queries

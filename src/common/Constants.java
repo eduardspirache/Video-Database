@@ -10,6 +10,8 @@ public final class Constants {
     }
     public static final String ASCENDING = "asc";
     public static final String DESCENDING = "desc";
+    public static final String BASIC = "BASIC";
+    public static final String PREMIUM = "PREMIUM";
     public static final String DATABASE = "database";
     public static final String ACTORS = "actors";
     public static final String MOVIES = "movies";

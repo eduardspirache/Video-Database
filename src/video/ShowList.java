@@ -9,7 +9,7 @@ import static common.Constants.ASCENDING;
 import static java.util.stream.Collectors.toMap;
 
 public class ShowList {
-    private List<Show> showList;
+    private final List<Show> showList;
 
 
     // Constructor
@@ -23,19 +23,35 @@ public class ShowList {
     }
 
     //////////////////////////////// Queries ////////////////////////////////
+    public List<Show> sortQuery(String criteria, String sortType,
+                            UserList userList, int year, String genre) {
+        List<Show> tempList = switch (criteria) {
+            case "ratings" -> sortByRating(sortType);
+            case "favorite" -> sortByFavorite(sortType, userList);
+            case "longest" -> sortByDuration(sortType);
+            default -> sortByViews(sortType, userList);
+        };
+
+        if (year != 0)
+            tempList.removeIf(a -> a.getYear() != year);
+        if (genre != null)
+            tempList.removeIf(a -> !a.getGenres().contains(genre));
+        return tempList;
+    }
+
     public List<Show> sortByRating(String sortType) {
         List<Show> sorted = showList;
-        sorted.removeIf(a -> a.getFinalRating() == 0);
+        sorted.removeIf(a -> a.getRating() == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort((a,b) -> {
-                if(a.getFinalRating() != b.getFinalRating())
-                    return Double.compare(a.getFinalRating(), b.getFinalRating());
+                if(a.getRating() != b.getRating())
+                    return Double.compare(a.getRating(), b.getRating());
                 return a.getTitle().compareTo(b.getTitle());
             });
         } else {
             sorted.sort((a, b) -> {
-                if(a.getFinalRating() != b.getFinalRating())
-                    return Double.compare(b.getFinalRating(), a.getFinalRating());
+                if(a.getRating() != b.getRating())
+                    return Double.compare(b.getRating(), a.getRating());
                 return b.getTitle().compareTo(a.getTitle());
             });
         }
@@ -52,8 +68,28 @@ public class ShowList {
         return sorted;
     }
 
+    public List<Show> sortByFavorite(String sortType, UserList userList) {
+        List<Show> sorted = showList;
+        if (sortType.equals(ASCENDING)) {
+            sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
+        } else {
+            sorted.sort((a, b) -> Integer.compare(b.getFavorite(userList), a.getFavorite(userList)));
+        }
+        return sorted;
+    }
+
+    public List<Show> sortByDuration(String sortType) {
+        List<Show> sorted = showList;
+        if (sortType.equals(ASCENDING)) {
+            sorted.sort(Comparator.comparingInt(Show::getDuration));
+        } else {
+            sorted.sort((a, b) -> Integer.compare(b.getDuration(), a.getDuration()));
+        }
+        return sorted;
+    }
+
     ///////////////////////////// Recommendations /////////////////////////////
-    public Map<String, Integer> getPopularGenres(Genre genres, UserList userList) {
+    public Map<String, Integer> getPopularGenres(UserList userList) {
         Map<String, Integer> top = new LinkedHashMap<>();
 
         for (Genre genre : Genre.values()) {

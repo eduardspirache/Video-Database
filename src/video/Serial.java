@@ -30,7 +30,7 @@ public class Serial extends Show {
     }
 
     public void setRating() {
-        super.setFinalRating(this.getRating());
+        super.setRating(this.getRating());
     }
 
 

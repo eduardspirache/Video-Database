@@ -3,7 +3,6 @@ package actor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 import static common.Constants.ASCENDING;
 
@@ -26,16 +25,24 @@ public class ActorList {
         List<Actor> tempList;
         if (criteria.equals("average"))
             tempList = sortByRating(sortType);
-        else if (criteria.equals("awards"))
+        else if (criteria.equals("awards") && awards != null)
             tempList = sortByAwards(sortType, awards);
-        else
+        else if (criteria.equals("filter_description") && words != null)
             tempList = sortByDescription(sortType, words);
+        else
+            return "[]";
+
+
+        // We check if the given number of actors to show
+        // is larger than the list itself
+        if (n <= tempList.size())
+            tempList = tempList.subList(0, n - 1);
 
         List<String> output = new ArrayList<>();
         for (var actor : tempList)
             output.add(actor.getName());
 
-        return output.subList(0, n - 1).toString();
+        return "" + output;
     }
 
     public List<Actor> sortByRating(String sortType) {
