@@ -46,7 +46,7 @@ public class ActorList {
     }
 
     public List<Actor> sortByRating(String sortType) {
-        List<Actor> sorted = actorList;
+        List<Actor> sorted = new ArrayList<>(actorList);
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingDouble(Actor::getRating));
         } else {
@@ -57,7 +57,7 @@ public class ActorList {
 
     public List<Actor> sortByAwards(String sortType,
                                     List<String> awards) {
-        List<Actor> sorted = actorList;
+        List<Actor> sorted = new ArrayList<>(actorList);
         // We remove the actors that haven't won the prizes the user searched for
         sorted.removeIf(a -> a.noOfAwards(awards) == 0);
         if (sortType.equals(ASCENDING)) {
@@ -71,7 +71,7 @@ public class ActorList {
 
     public List<Actor> sortByDescription(String sortType,
                                          List<String> words) {
-        List<Actor> sorted = actorList;
+        List<Actor> sorted = new ArrayList<>(actorList);
         sorted.removeIf(a -> !a.filterDescription(words));
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparing(Actor::getName));

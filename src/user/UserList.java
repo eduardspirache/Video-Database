@@ -2,15 +2,15 @@ package user;
 
 import video.Movie;
 import video.Serial;
-import video.Show;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import static common.Constants.ASCENDING;
 
 public class UserList {
-    private List<User> userList;
+    private final List<User> userList;
 
     public UserList(List<User> userList) {
         this.userList = userList;
@@ -49,15 +49,15 @@ public class UserList {
 
     //////////////////////////////// Queries ////////////////////////////////
     public List<User> sortByRating(int n, String sortType) {
-        List<User> sorted = userList;
+        List<User> sorted = new ArrayList<>(userList);
+        sorted.removeIf(a -> a.getCountRatings() == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(User::getCountRatings));
         } else {
             sorted.sort((a, b) -> Integer.compare(b.getCountRatings(),
                     a.getCountRatings()));
         }
-
-        if (n <= sorted.size())
+        if (n < sorted.size())
             return sorted.subList(0, n - 1);
         else
             return sorted;

@@ -40,7 +40,7 @@ public class ShowList {
     }
 
     public List<Show> sortByRating(String sortType) {
-        List<Show> sorted = showList;
+        List<Show> sorted = new ArrayList<>(this.getShowList());
         sorted.removeIf(a -> a.getRating() == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort((a,b) -> {
@@ -59,7 +59,7 @@ public class ShowList {
     }
 
     public List<Show> sortByViews(String sortType, UserList userList) {
-        List<Show> sorted = showList;
+        List<Show> sorted = new ArrayList<>(this.getShowList());
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getViews(userList)));
         } else {
@@ -69,7 +69,7 @@ public class ShowList {
     }
 
     public List<Show> sortByFavorite(String sortType, UserList userList) {
-        List<Show> sorted = showList;
+        List<Show> sorted = new ArrayList<>(this.getShowList());
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
         } else {
@@ -79,7 +79,7 @@ public class ShowList {
     }
 
     public List<Show> sortByDuration(String sortType) {
-        List<Show> sorted = showList;
+        List<Show> sorted = new ArrayList<>(this.getShowList());
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(Show::getDuration));
         } else {
@@ -95,7 +95,7 @@ public class ShowList {
         for (Genre genre : Genre.values()) {
             // We make a list with all the shows that
             // contain the genre we are looking for
-            List<Show> specificGenreShow = getShowList();
+            List<Show> specificGenreShow = new ArrayList<>(this.getShowList());
             specificGenreShow.removeIf(a -> !a.getGenres()
                     .contains(genre.toString()));
             // We iterate through all the shows

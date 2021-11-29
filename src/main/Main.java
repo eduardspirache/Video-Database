@@ -121,6 +121,7 @@ public final class Main {
                             awards, words);
                 } else if (action.getObjectType().equals("users")) {
                     List<User> sortedList = userList.sortByRating(action.getNumber(), action.getSortType());
+
                     List<String> outList = new ArrayList<>();
                     for (var user : sortedList)
                         outList.add(user.getUsername());
