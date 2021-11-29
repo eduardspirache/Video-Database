@@ -100,4 +100,10 @@ public class ShowList {
                                 LinkedHashMap::new));
     }
 
+    @Override
+    public String toString() {
+        return "ShowList{" +
+                "showList=" + showList +
+                '}';
+    }
 }
