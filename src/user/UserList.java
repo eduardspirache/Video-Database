@@ -4,7 +4,6 @@ import video.Movie;
 import video.Serial;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static common.Constants.ASCENDING;
@@ -52,10 +51,19 @@ public class UserList {
         List<User> sorted = new ArrayList<>(userList);
         sorted.removeIf(a -> a.getCountRatings() == 0);
         if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingInt(User::getCountRatings));
+            sorted.sort((a, b) -> {
+                if(a.getCountRatings() != b.getCountRatings())
+                    return Integer.compare(a.getCountRatings(),
+                            b.getCountRatings());
+                return a.getUsername().compareTo(b.getUsername());
+            });
         } else {
-            sorted.sort((a, b) -> Integer.compare(b.getCountRatings(),
-                    a.getCountRatings()));
+            sorted.sort((a, b) -> {
+                if(a.getCountRatings() != b.getCountRatings())
+                    return Integer.compare(b.getCountRatings(),
+                            a.getCountRatings());
+                return b.getUsername().compareTo(a.getUsername());
+            });
         }
         if (n < sorted.size())
             return sorted.subList(0, n - 1);

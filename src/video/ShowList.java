@@ -62,9 +62,17 @@ public class ShowList {
         List<Show> sorted = new ArrayList<>(this.getShowList());
         sorted.removeIf(a -> a.getViews(userList) == 0);
         if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingInt(a -> a.getViews(userList)));
+            sorted.sort((a, b) -> {
+                if (a.getViews(userList) != b.getViews(userList))
+                    return Integer.compare(a.getViews(userList), b.getViews(userList));
+                return a.getTitle().compareTo(b.getTitle());
+            });
         } else {
-            sorted.sort((a, b) -> Integer.compare(b.getViews(userList), a.getViews(userList)));
+            sorted.sort((a, b) -> {
+                if (a.getViews(userList) != b.getViews(userList))
+                    return Integer.compare(b.getViews(userList), a.getViews(userList));
+                return b.getTitle().compareTo(a.getTitle());
+            });
         }
         return sorted;
     }
@@ -73,9 +81,17 @@ public class ShowList {
         List<Show> sorted = new ArrayList<>(this.getShowList());
         sorted.removeIf(a -> a.getFavorite(userList) == 0);
         if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
+            sorted.sort((a, b) -> {
+                if (a.getFavorite(userList) != b.getFavorite(userList))
+                    return Integer.compare(a.getFavorite(userList), b.getFavorite(userList));
+                return a.getTitle().compareTo(b.getTitle());
+            });
         } else {
-            sorted.sort((a, b) -> Integer.compare(b.getFavorite(userList), a.getFavorite(userList)));
+            sorted.sort((a, b) -> {
+                if (a.getFavorite(userList) != b.getFavorite(userList))
+                    return Integer.compare(b.getFavorite(userList), a.getFavorite(userList));
+                return b.getTitle().compareTo(a.getTitle());
+            });
         }
         return sorted;
     }
@@ -83,9 +99,17 @@ public class ShowList {
     public List<Show> sortByDuration(String sortType) {
         List<Show> sorted = new ArrayList<>(this.getShowList());
         if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingInt(Show::getDuration));
+            sorted.sort((a, b) -> {
+                if (a.getDuration() != b.getDuration())
+                    return Integer.compare(a.getDuration(), b.getDuration());
+                return a.getTitle().compareTo(b.getTitle());
+            });
         } else {
-            sorted.sort((a, b) -> Integer.compare(b.getDuration(), a.getDuration()));
+            sorted.sort((a, b) -> {
+                if (a.getDuration() != b.getDuration())
+                    return Integer.compare(b.getDuration(), a.getDuration());
+                return b.getTitle().compareTo(a.getTitle());
+            });
         }
         return sorted;
     }

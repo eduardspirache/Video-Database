@@ -89,20 +89,21 @@ public final class Actor {
     // if it doesn't contain all the awards we searched
     // it returns zero
     public int noOfAwards(List<String> searchedAwards) {
-        AtomicInteger count = new AtomicInteger();
-        AtomicInteger matchingAwards = new AtomicInteger();
-        for (var award : searchedAwards) {
-            awards.forEach((a, n) -> {
-                if (award.equals(a.toString())) {
-                    count.addAndGet(n);
-                    matchingAwards.getAndIncrement();
+        int count = 0;
+        for (String searchedAward : searchedAwards) {
+            for (ActorsAwards actorAward : awards.keySet()) {
+                if (actorAward.toString().equals(searchedAward)) {
+                    count++;
                 }
-            });
+            }
         }
-        // Verifying if the actor has all the awards we searched for
-        if (matchingAwards.get() == searchedAwards.size()) {
-            return count.get();
+        int sumAwards = 0;
+        for (ActorsAwards award : awards.keySet()) {
+            sumAwards += awards.get(award);
         }
+
+        if(count == searchedAwards.size())
+            return sumAwards;
         return 0;
     }
 

@@ -75,10 +75,19 @@ public class ActorList {
         // We remove the actors that haven't won the prizes the user searched for
         sorted.removeIf(a -> a.noOfAwards(awards) == 0);
         if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingInt(a -> a.noOfAwards(awards)));
+            sorted.sort((a, b) -> {
+                if(a.noOfAwards(awards) != b.noOfAwards(awards))
+                    return Integer.compare(a.noOfAwards(awards),
+                            b.noOfAwards(awards));
+                return a.getName().compareTo(b.getName());
+            });
         } else {
-            sorted.sort((a, b) -> Integer.compare(b.noOfAwards(awards),
-                    a.noOfAwards(awards)));
+            sorted.sort((a, b) -> {
+                if(a.noOfAwards(awards) != b.noOfAwards(awards))
+                    return Integer.compare(b.noOfAwards(awards),
+                            a.noOfAwards(awards));
+                return b.getName().compareTo(a.getName());
+            });
         }
         return sorted;
     }
