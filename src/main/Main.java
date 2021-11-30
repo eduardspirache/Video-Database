@@ -115,9 +115,8 @@ public final class Main {
             } else if (action.getActionType().equals("query")) {
                 output = "Query result: ";
                 if (action.getObjectType().equals("actors")) {
-                    List<String> awards = action.getFilters().get(2);
-                    List<String> words = action.getFilters().get(3);
-
+                    List<String> words = action.getFilters().get(2);
+                    List<String> awards = action.getFilters().get(3);
                     output += actorList.sortQuery(action.getNumber(),
                             action.getCriteria(), action.getSortType(),
                             awards, words, showList);
