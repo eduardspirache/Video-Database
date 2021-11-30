@@ -70,6 +70,7 @@ public class ShowList {
 
     public List<Show> sortByFavorite(String sortType, UserList userList) {
         List<Show> sorted = new ArrayList<>(this.getShowList());
+        sorted.removeIf(a -> a.getFavorite(userList) == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getFavorite(userList)));
         } else {

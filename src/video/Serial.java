@@ -1,11 +1,9 @@
 package video;
 
 import entertainment.Season;
-import user.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Serial extends Show {
     private final int numberOfSeasons;
@@ -29,10 +27,15 @@ public class Serial extends Show {
         return seasons;
     }
 
-    public void setRating() {
+    public void setRating(double rating, int season) {
+        // We retrieve the season from the list of seasons
+        Season toRate = seasons.get(season - 1);
+
+        // We add the rating to the season list
+        toRate.getRatings().add(rating);
+
         super.setRating(this.getRating());
     }
-
 
     @Override
     public String toString() {
@@ -49,16 +52,22 @@ public class Serial extends Show {
 
     // Calculates the rating for all the seasons
     public double getRating() {
-        double avg = 0;
-        int count = 0;
+        double finalRating = 0.0;
+
+        double avg = 0.0;
+        double count = 0.0;
         for (var season : seasons) {
             List<Double> ratings = season.getRatings();
+            if(ratings.size() == 0)
+                count ++;
             for (Double rating : ratings) {
                 avg += rating;
                 count++;
             }
         }
-        return avg / (double) count;
+        if (count > 0)
+            finalRating = avg / count;
+        return finalRating;
     }
 
     // Returns the duration of all seasons

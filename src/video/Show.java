@@ -28,7 +28,6 @@ public abstract class Show {
 
     // Getters
 
-
     public int getDuration() {
         return duration;
     }

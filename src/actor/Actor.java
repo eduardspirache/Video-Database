@@ -1,8 +1,10 @@
 package actor;
 
+import video.Show;
+import video.ShowList;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -11,7 +13,7 @@ public final class Actor {
     private String careerDescription;
     private Double rating;
     private ArrayList<String> filmography;
-    private Map<ActorsAwards, Integer> awards;
+    private final Map<ActorsAwards, Integer> awards;
 
     // Constructor
     public Actor(final String name, final String careerDescription,
@@ -53,10 +55,6 @@ public final class Actor {
         this.careerDescription = careerDescription;
     }
 
-    public Double getRating() {
-        return rating;
-    }
-
     public void setRating(Double rating) {
         this.rating = rating;
     }
@@ -71,6 +69,21 @@ public final class Actor {
     }
 
     // Methods for Queries
+    public Double getRating(ShowList showList) {
+        double newRating = 0.0;
+        double count = 0.0;
+        List<Show> list = showList.getShowList();
+        for (var film : filmography) {
+            for (var show : list)
+                if (show.getTitle().equals(film) && show.getRating() > 0) {
+                    newRating += show.getRating();
+                    count++;
+                }
+        }
+        if (count != 0)
+            return newRating / count;
+        return 0.0;
+    }
 
     // Returns the number of searched awards
     // if it doesn't contain all the awards we searched
@@ -96,7 +109,7 @@ public final class Actor {
     public boolean filterDescription(List<String> words) {
         int count = 0;
         for (String word : words) {
-            if (careerDescription.toLowerCase()
+            if (getCareerDescription().toLowerCase()
                     .contains(word.toLowerCase())) {
                 count++;
             }

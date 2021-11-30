@@ -1,5 +1,7 @@
 package actor;
 
+import video.ShowList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
@@ -7,7 +9,7 @@ import java.util.Comparator;
 import static common.Constants.ASCENDING;
 
 public class ActorList {
-    private List<Actor> actorList;
+    private final List<Actor> actorList;
 
     // Constructor
     public ActorList(List<Actor> actorList) {
@@ -21,10 +23,11 @@ public class ActorList {
 
     //////////////////////////////// Queries ////////////////////////////////
     public String sortQuery(int n, String criteria, String sortType,
-                            List<String> awards, List<String> words) {
+                            List<String> awards, List<String> words,
+                            ShowList showList) {
         List<Actor> tempList;
         if (criteria.equals("average"))
-            tempList = sortByRating(sortType);
+            tempList = sortByRating(sortType, showList);
         else if (criteria.equals("awards") && awards != null)
             tempList = sortByAwards(sortType, awards);
         else if (criteria.equals("filter_description") && words != null)
@@ -32,11 +35,10 @@ public class ActorList {
         else
             return "[]";
 
-
         // We check if the given number of actors to show
         // is larger than the list itself
         if (n <= tempList.size())
-            tempList = tempList.subList(0, n - 1);
+            tempList = tempList.subList(0, n);
 
         List<String> output = new ArrayList<>();
         for (var actor : tempList)
@@ -45,12 +47,24 @@ public class ActorList {
         return "" + output;
     }
 
-    public List<Actor> sortByRating(String sortType) {
+    public List<Actor> sortByRating(String sortType, ShowList showList) {
         List<Actor> sorted = new ArrayList<>(actorList);
+        sorted.removeIf(a -> a.getRating(showList) == 0);
         if (sortType.equals(ASCENDING)) {
-            sorted.sort(Comparator.comparingDouble(Actor::getRating));
+            sorted.sort((a, b) -> {
+                    if(!a.getRating(showList).equals(b.getRating(showList)))
+                        return Double.compare(a.getRating(showList),
+                                b.getRating(showList));
+                    return a.getName().compareTo(b.getName());
+            });
         } else {
-            sorted.sort((a, b) -> Double.compare(b.getRating(), a.getRating()));
+            sorted.sort((a, b) -> {
+                if(!a.getRating(showList).equals(b.getRating(showList)))
+                    return Double.compare(b.getRating(showList),
+                            a.getRating(showList));
+                return b.getName().compareTo(a.getName());
+
+            });
         }
         return sorted;
     }

@@ -92,9 +92,11 @@ public final class Main {
             String output = null;
             if (action.getActionType().equals("command")) {
                 if (!action.getType().equals("rating")) {
+
                     output = userList.simpleCommands(action.getType(),
                             action.getUsername(), action.getTitle());
                 } else {
+
                     if (action.getSeasonNumber() == 0) {
                         for (var movie : movieList.getMovieList())
                             if (movie.getTitle().equals(action.getTitle()))
@@ -118,7 +120,7 @@ public final class Main {
 
                     output += actorList.sortQuery(action.getNumber(),
                             action.getCriteria(), action.getSortType(),
-                            awards, words);
+                            awards, words, showList);
                 } else if (action.getObjectType().equals("users")) {
                     List<User> sortedList = userList.sortByRating(action.getNumber(), action.getSortType());
 
@@ -139,13 +141,27 @@ public final class Main {
                                     action.getSortType(),
                                     userList, year, genre);
 
-                    if (action.getObjectType().equals("movies"))
-                        filteredList.removeIf(a -> movieList.getMovieList().contains(a.getTitle()));
-                    else if (action.getObjectType().equals("shows"))
-                        filteredList.removeIf(a -> !serialList.getSerialList().contains(a.getTitle()));
+
+                    // If the query type is a show or movie, we want
+                    // to remove from our list the movies or shows.
+                    if (action.getObjectType().equals("movies")) {
+                        List<Show> serials = new ArrayList<>();
+                        for (var show : filteredList)
+                            for (var serial : serialList.getSerialList())
+                                if (show.getTitle().equals(serial.getTitle()))
+                                    serials.add(show);
+                        filteredList.removeAll(serials);
+                    } else if (action.getObjectType().equals("shows")) {
+                        List<Show> movies = new ArrayList<>();
+                        for (var show : filteredList)
+                            for (var movie : movieList.getMovieList())
+                                if (show.getTitle().equals(movie.getTitle()))
+                                    movies.add(show);
+                        filteredList.removeAll(movies);
+                    }
 
                     if (action.getNumber() <= filteredList.size())
-                        filteredList = filteredList.subList(0, action.getNumber() - 1);
+                        filteredList = filteredList.subList(0, action.getNumber());
 
                     // We store the titles in a string list
                     // to be able to easily print them
@@ -155,21 +171,18 @@ public final class Main {
                     output += outList;
                 }
             } else if (action.getActionType().equals("recommendation")) {
-                if (action.getType().equals("standard"))
-                    output = userList.retrieveUser(action.getUsername())
+                output = switch (action.getType()) {
+                    case "standard" -> userList.retrieveUser(action.getUsername())
                             .standard(showList);
-                else if (action.getType().equals("best_unseen"))
-                    output = userList.retrieveUser(action.getUsername())
+                    case "best_unseen" -> userList.retrieveUser(action.getUsername())
                             .bestUnseen(showList);
-                else if (action.getType().equals("popular"))
-                    output = userList.retrieveUser(action.getUsername())
+                    case "popular" -> userList.retrieveUser(action.getUsername())
                             .popularVideo(showList, userList);
-                else if (action.getType().equals("favorite"))
-                    output = userList.retrieveUser(action.getUsername())
+                    case "favorite" -> userList.retrieveUser(action.getUsername())
                             .favoriteVideo(showList, userList);
-                else
-                    output = userList.retrieveUser(action.getUsername())
+                    default -> userList.retrieveUser(action.getUsername())
                             .unseenGenre(showList, action.getGenre());
+                };
             }
             JSONObject outputObj = fileWriter.writeFile(action.getActionId(), "message", output);
             arrayResult.add(outputObj);

@@ -1,13 +1,10 @@
 package video;
 
-import user.User;
-
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Movie extends Show {
     private final int duration;
-    private ArrayList<Double> rating;
+    private final ArrayList<Double> rating;
 
     // Constructor
     public Movie(final String title, final ArrayList<String> cast,
@@ -43,14 +40,15 @@ public class Movie extends Show {
     ///////////////////////////////// Methods /////////////////////////////////
 
     public double getRating() {
-        if (this.rating == null)
-            return 0;
+        if (rating != null) {
+            double avg = 0.0;
+            for (double rate : rating)
+                avg += rate;
 
-        double avg = 0;
-        for (double rate : rating)
-            avg += rate;
-
-        return avg / (double) rating.size();
+            if (rating.size() != 0)
+                return avg / (double) rating.size();
+        }
+        return 0.0;
     }
 
 }

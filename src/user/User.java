@@ -103,19 +103,7 @@ public class User {
         // We check if the user watched the serial and has not rated the season
         if (seen(serial.getTitle()) &&
                 !ratedMovies.contains(serial.getTitle() + "S" + season)) {
-
-            // We retrieve the season from the list of seasons
-            List<Season> seasons = serial.getSeasons();
-            Season toRate = seasons.get(season - 1);
-
-            // We copy the list, add the rating and then set the original list
-            // to the modified list
-            List<Double> listOfRatings = toRate.getRatings();
-            listOfRatings.add(rating);
-            toRate.setRatings(listOfRatings);
-
-            // We readjust the show's rating
-            serial.setRating();
+            serial.setRating(rating, season);
             ratedMovies.add(serial.getTitle() + "S" + season);
             return "success -> " + serial.getTitle() + " was rated with "
                     + rating + " by " + username;
