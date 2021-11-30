@@ -24,7 +24,7 @@ public class ShowList {
 
     //////////////////////////////// Queries ////////////////////////////////
     public List<Show> sortQuery(String criteria, String sortType,
-                            UserList userList, int year, String genre) {
+                                UserList userList, int year, String genre) {
         List<Show> tempList = switch (criteria) {
             case "ratings" -> sortByRating(sortType);
             case "favorite" -> sortByFavorite(sortType, userList);
@@ -43,14 +43,14 @@ public class ShowList {
         List<Show> sorted = new ArrayList<>(this.getShowList());
         sorted.removeIf(a -> a.getRating() == 0);
         if (sortType.equals(ASCENDING)) {
-            sorted.sort((a,b) -> {
-                if(a.getRating() != b.getRating())
+            sorted.sort((a, b) -> {
+                if (a.getRating() != b.getRating())
                     return Double.compare(a.getRating(), b.getRating());
                 return a.getTitle().compareTo(b.getTitle());
             });
         } else {
             sorted.sort((a, b) -> {
-                if(a.getRating() != b.getRating())
+                if (a.getRating() != b.getRating())
                     return Double.compare(b.getRating(), a.getRating());
                 return b.getTitle().compareTo(a.getTitle());
             });
@@ -60,6 +60,7 @@ public class ShowList {
 
     public List<Show> sortByViews(String sortType, UserList userList) {
         List<Show> sorted = new ArrayList<>(this.getShowList());
+        sorted.removeIf(a -> a.getViews(userList) == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparingInt(a -> a.getViews(userList)));
         } else {
@@ -94,17 +95,13 @@ public class ShowList {
         Map<String, Integer> top = new LinkedHashMap<>();
 
         for (Genre genre : Genre.values()) {
-            // We make a list with all the shows that
-            // contain the genre we are looking for
-            List<Show> specificGenreShow = new ArrayList<>(this.getShowList());
-            specificGenreShow.removeIf(a -> !a.getGenres()
-                    .contains(genre.toString()));
-            // We iterate through all the shows
-            // we found in a genre and count the views
+            String comparableGenre = Genres.returnGenre(genre);
             int views = 0;
-            for (var show : specificGenreShow)
-                views += show.getViews(userList);
-            top.put(genre.toString(), views);
+            for (var show : showList) {
+                if (show.getGenres().contains(comparableGenre))
+                    views += show.getViews(userList);
+            }
+            top.put(comparableGenre, views);
         }
         // We sort the map
         return top.entrySet()

@@ -1,10 +1,7 @@
 package user;
 
 import entertainment.Season;
-import video.Movie;
-import video.Serial;
-import video.Show;
-import video.ShowList;
+import video.*;
 
 import java.util.*;
 
@@ -119,15 +116,19 @@ public class User {
     ///////////////////////////// Recommendations /////////////////////////////
     public String standard(ShowList shows) {
         for (var show : shows.getShowList())
-            if (history.containsKey(show.getTitle()))
+            if (!history.containsKey(show.getTitle()))
                 return "StandardRecommendation result: " + show.getTitle();
         return "StandardRecommendation cannot be applied!";
     }
 
     public String bestUnseen(ShowList shows) {
-        List<Show> sorted = shows.sortByRating(DESCENDING);
+        List<Show> sorted = shows.getShowList();
+        sorted.sort((a, b) -> {
+            return Double.compare(b.getRating(), a.getRating());
+        });
+
         for (var video : sorted)
-            if (history.containsKey(video.getTitle()))
+            if (!history.containsKey(video.getTitle()))
                 return "BestRatedUnseenRecommendation result: " +
                         video.getTitle();
         return "BestRatedUnseenRecommendation cannot be applied!";
@@ -136,9 +137,13 @@ public class User {
     public String popularVideo(ShowList shows, UserList userList) {
         if (getSubscriptionType().equals(PREMIUM)) {
             Map<String, Integer> top = shows.getPopularGenres(userList);
-            for (String showName : top.keySet())
-                if (!history.containsKey(showName))
-                    return "PopularRecommendation result: " + showName;
+
+            for(String genre : top.keySet())
+                for (var show : shows.getShowList()) {
+                    if(show.getGenres().contains(genre) &&
+                            !history.containsKey(show.getTitle()))
+                        return "PopularRecommendation result: " + show.getTitle();
+                }
         }
         return "PopularRecommendation cannot be applied!";
     }
@@ -155,13 +160,17 @@ public class User {
 
     public String unseenGenre(ShowList shows, String genre) {
         if (getSubscriptionType().equals(PREMIUM)) {
-            List<Show> showList = shows.sortByRating(DESCENDING);
+            List<Show> showList = shows.getShowList();
+            showList.sort((a, b) -> {
+                if(a.getRating() != b.getRating())
+                    return Double.compare(b.getRating(), a.getRating());
+                return a.getTitle().compareTo(b.getTitle());
+            });
             // We remove from the list all the shows
             // that are from a different genre
             showList.removeIf(a -> !a.getGenres().contains(genre));
             // We remove the shows that the user has already seen
             showList.removeIf(show -> history.containsKey(show.getTitle()));
-
             if (showList.size() != 0) {
                 List<String> titles = new ArrayList<>();
                 for (var show : showList)

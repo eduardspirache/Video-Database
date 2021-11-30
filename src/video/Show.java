@@ -75,15 +75,13 @@ public abstract class Show {
     // If it is, it increments the number of views with the
     // number of times the user watched the show
     public int getViews(UserList userList) {
-        AtomicInteger noOfViews = new AtomicInteger();
+        int noOfViews = 0;
         for (var user : userList.getUserList()) {
-            user.getHistory().forEach((a, n) -> {
-                if(a.equals(this.getTitle())) {
-                    noOfViews.addAndGet(n);
-                }
-            });
+            for (String showName : user.getHistory().keySet())
+                if(showName.equals(this.getTitle()))
+                    noOfViews += user.getHistory().get(showName);
         }
-        return noOfViews.get();
+        return noOfViews;
     }
 }
 

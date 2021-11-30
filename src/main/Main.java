@@ -141,7 +141,6 @@ public final class Main {
                                     action.getSortType(),
                                     userList, year, genre);
 
-
                     // If the query type is a show or movie, we want
                     // to remove from our list the movies or shows.
                     if (action.getObjectType().equals("movies")) {
@@ -183,6 +182,7 @@ public final class Main {
                     default -> userList.retrieveUser(action.getUsername())
                             .unseenGenre(showList, action.getGenre());
                 };
+
             }
             JSONObject outputObj = fileWriter.writeFile(action.getActionId(), "message", output);
             arrayResult.add(outputObj);
