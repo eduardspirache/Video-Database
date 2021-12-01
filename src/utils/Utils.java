@@ -1,10 +1,19 @@
 package utils;
 
+import actor.Actor;
 import actor.ActorsAwards;
 import common.Constants;
 import entertainment.Genre;
+import entertainment.Season;
+import fileio.ActorInputData;
+import fileio.MovieInputData;
+import fileio.SerialInputData;
+import fileio.UserInputData;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import user.User;
+import video.Movie;
+import video.Serial;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -122,5 +131,56 @@ public final class Utils {
         }
 
         return mapVideos;
+    }
+
+    public static Actor returnActor(ActorInputData actorInput) {
+        Actor actor;
+
+        String name = actorInput.getName();
+        String description = actorInput.getCareerDescription();
+        ArrayList<String> filmography = actorInput.getFilmography();
+        Map<ActorsAwards, Integer> awards = actorInput.getAwards();
+
+        actor = new Actor(name, description, filmography, awards);
+        return actor;
+    }
+
+    public static Movie returnMovie(MovieInputData movieInput) {
+        Movie movie;
+
+        String title = movieInput.getTitle();
+        int year = movieInput.getYear();
+        ArrayList<String> cast = movieInput.getCast();
+        ArrayList<String> genres = movieInput.getGenres();
+        int duration = movieInput.getDuration();
+
+        movie = new Movie(title, cast, genres, year, duration);
+        return movie;
+    }
+
+    public static Serial returnSerial(SerialInputData serialInput) {
+        Serial serial;
+
+        String title = serialInput.getTitle();
+        int year = serialInput.getYear();
+        ArrayList<String> cast = serialInput.getCast();
+        ArrayList<String> genres = serialInput.getGenres();
+        int numberOfSeasons = serialInput.getNumberSeason();
+        ArrayList<Season> seasons = serialInput.getSeasons();
+
+        serial = new Serial(title, cast, genres, numberOfSeasons, seasons, year);
+        return serial;
+    }
+
+    public static User returnUser(UserInputData userInput) {
+        User user;
+
+        String username = userInput.getUsername();
+        String subscription = userInput.getSubscriptionType();
+        Map<String, Integer> history = userInput.getHistory();
+        ArrayList<String> favorite = userInput.getFavoriteMovies();
+
+        user = new User(username, subscription, history, favorite);
+        return user;
     }
 }

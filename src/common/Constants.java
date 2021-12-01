@@ -9,6 +9,8 @@ public final class Constants {
     private Constants() {
     }
     public static final String ASCENDING = "asc";
+    public static final int WORDS_PLACE = 2;
+    public static final int AWARDS_PLACE = 3;
     public static final String BASIC = "BASIC";
     public static final String PREMIUM = "PREMIUM";
     public static final String DATABASE = "database";

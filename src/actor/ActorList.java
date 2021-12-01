@@ -42,33 +42,40 @@ public class ActorList {
             return "[]";
         }
 
-        // We check if the given number of actors to show
-        // is larger than the list itself
-        if (n <= tempList.size())
+        /**
+         * We check if the given number of actors to show
+         * is larger than the list itself
+         */
+        if (n <= tempList.size()) {
             tempList = tempList.subList(0, n);
+        }
 
         List<String> output = new ArrayList<>();
-        for (var actor : tempList)
+        for (var actor : tempList) {
             output.add(actor.getName());
-
+        }
         return "" + output;
     }
 
-    public List<Actor> sortByRating(String sortType, ShowList showList) {
+    /**
+     * Sorts all the actors by the rating recieved by calling the function
+     * actor.getRating(showList)
+     */
+    public List<Actor> sortByRating(final String sortType, final ShowList showList) {
         List<Actor> sorted = new ArrayList<>(actorList);
         sorted.removeIf(a -> a.getRating(showList) == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort((a, b) -> {
-                if (!a.getRating(showList).equals(b.getRating(showList)))
-                    return Double.compare(a.getRating(showList),
-                            b.getRating(showList));
+                if (!a.getRating(showList).equals(b.getRating(showList))) {
+                    return Double.compare(a.getRating(showList), b.getRating(showList));
+                }
                 return a.getName().compareTo(b.getName());
             });
         } else {
             sorted.sort((a, b) -> {
-                if (!a.getRating(showList).equals(b.getRating(showList)))
-                    return Double.compare(b.getRating(showList),
-                            a.getRating(showList));
+                if (!a.getRating(showList).equals(b.getRating(showList))) {
+                    return Double.compare(b.getRating(showList), a.getRating(showList));
+                }
                 return b.getName().compareTo(a.getName());
 
             });
@@ -76,31 +83,40 @@ public class ActorList {
         return sorted;
     }
 
-    public List<Actor> sortByAwards(String sortType,
-                                    List<String> awards) {
+    /**
+     * Sorts the users that have won certain awards
+     * by the number of TOTAL awards and eliminates
+     * the actors that haven't won all the awards we
+     * are looking for
+     */
+    public List<Actor> sortByAwards(final String sortType, final List<String> awards) {
         List<Actor> sorted = new ArrayList<>(actorList);
-        // We remove the actors that haven't won the prizes the user searched for
         sorted.removeIf(a -> a.noOfAwards(awards) == 0);
         if (sortType.equals(ASCENDING)) {
             sorted.sort((a, b) -> {
-                if (a.noOfAwards(awards) != b.noOfAwards(awards))
-                    return Integer.compare(a.noOfAwards(awards),
-                            b.noOfAwards(awards));
+                if (a.noOfAwards(awards) != b.noOfAwards(awards)) {
+                    return Integer.compare(a.noOfAwards(awards), b.noOfAwards(awards));
+                }
                 return a.getName().compareTo(b.getName());
             });
         } else {
             sorted.sort((a, b) -> {
-                if (a.noOfAwards(awards) != b.noOfAwards(awards))
-                    return Integer.compare(b.noOfAwards(awards),
-                            a.noOfAwards(awards));
+                if (a.noOfAwards(awards) != b.noOfAwards(awards)) {
+                    return Integer.compare(b.noOfAwards(awards), a.noOfAwards(awards));
+                }
                 return b.getName().compareTo(a.getName());
             });
         }
         return sorted;
     }
 
-    public List<Actor> sortByDescription(String sortType,
-                                         List<String> words) {
+    /**
+     * With the help of actor.filterDescription method,
+     * we retrieve all the actors that have all the words
+     * we are looking for in their description, and then sort
+     * them by name
+     */
+    public List<Actor> sortByDescription(final String sortType, final List<String> words) {
         List<Actor> sorted = new ArrayList<>(actorList);
         sorted.removeIf(a -> !a.filterDescription(words));
         if (sortType.equals(ASCENDING)) {

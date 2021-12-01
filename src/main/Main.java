@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static common.Constants.AWARDS_PLACE;
+import static common.Constants.WORDS_PLACE;
+
 /**
  * The entry point to this homework. It runs the checker that tests your implementation.
  */
@@ -98,42 +101,50 @@ public final class Main {
                 } else {
 
                     if (action.getSeasonNumber() == 0) {
-                        for (var movie : movieList.getMovieList())
-                            if (movie.getTitle().equals(action.getTitle()))
+                        for (var movie : movieList.getMovieList()) {
+                            if (movie.getTitle().equals(action.getTitle())) {
                                 output = userList.rateMovie(
                                         action.getUsername(),
                                         movie, action.getGrade());
+                            }
+                        }
                     } else {
-                        for (var serial : serialList.getSerialList())
-                            if (serial.getTitle().equals(action.getTitle()))
+                        for (var serial : serialList.getSerialList()) {
+                            if (serial.getTitle().equals(action.getTitle())) {
                                 output = userList.rateSerial(
                                         action.getUsername(), serial,
                                         action.getSeasonNumber(),
                                         action.getGrade());
+                            }
+                        }
                     }
                 }
             } else if (action.getActionType().equals("query")) {
                 output = "Query result: ";
                 if (action.getObjectType().equals("actors")) {
-                    List<String> words = action.getFilters().get(2);
-                    List<String> awards = action.getFilters().get(3);
+                    List<String> words = action.getFilters().get(WORDS_PLACE);
+                    List<String> awards = action.getFilters().get(AWARDS_PLACE);
                     output += actorList.sortQuery(action.getNumber(),
                             action.getCriteria(), action.getSortType(),
                             awards, words, showList);
                 } else if (action.getObjectType().equals("users")) {
-                    List<User> sortedList = userList.sortByRating(action.getNumber(), action.getSortType());
+                    List<User> sortedList = userList.sortByRating(action.getNumber(),
+                            action.getSortType());
 
                     List<String> outList = new ArrayList<>();
-                    for (var user : sortedList)
+                    for (var user : sortedList) {
                         outList.add(user.getUsername());
+                    }
                     output += outList;
                 } else {
                     int year = 0;
-                    if (action.getFilters().get(0).get(0) != null)
+                    if (action.getFilters().get(0).get(0) != null) {
                         year = Integer.parseInt(action.getFilters().get(0).get(0));
+                    }
                     String genre = null;
-                    if (action.getFilters().get(1).get(0) != null)
+                    if (action.getFilters().get(1).get(0) != null) {
                         genre = action.getFilters().get(1).get(0);
+                    }
 
                     List<Show> filteredList = showList
                             .sortQuery(action.getCriteria(),
@@ -144,28 +155,36 @@ public final class Main {
                     // to remove from our list the movies or shows.
                     if (action.getObjectType().equals("movies")) {
                         List<Show> serials = new ArrayList<>();
-                        for (var show : filteredList)
-                            for (var serial : serialList.getSerialList())
-                                if (show.getTitle().equals(serial.getTitle()))
+                        for (var show : filteredList) {
+                            for (var serial : serialList.getSerialList()) {
+                                if (show.getTitle().equals(serial.getTitle())) {
                                     serials.add(show);
+                                }
+                            }
+                        }
                         filteredList.removeAll(serials);
                     } else if (action.getObjectType().equals("shows")) {
                         List<Show> movies = new ArrayList<>();
-                        for (var show : filteredList)
-                            for (var movie : movieList.getMovieList())
-                                if (show.getTitle().equals(movie.getTitle()))
+                        for (var show : filteredList) {
+                            for (var movie : movieList.getMovieList()) {
+                                if (show.getTitle().equals(movie.getTitle())) {
                                     movies.add(show);
+                                }
+                            }
+                        }
                         filteredList.removeAll(movies);
                     }
 
-                    if (action.getNumber() <= filteredList.size())
+                    if (action.getNumber() <= filteredList.size()) {
                         filteredList = filteredList.subList(0, action.getNumber());
+                    }
 
                     // We store the titles in a string list
                     // to be able to easily print them
                     List<String> outList = new ArrayList<>();
-                    for (var show : filteredList)
+                    for (var show : filteredList) {
                         outList.add(show.getTitle());
+                    }
                     output += outList;
                 }
             } else if (action.getActionType().equals("recommendation")) {
