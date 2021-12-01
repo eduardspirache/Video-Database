@@ -17,36 +17,39 @@ public class Movie extends Show {
     }
 
     // Getters
+
+    /**
+     * Returns the duration of the movie
+     */
     public int getDuration() {
         return duration;
     }
 
-    // Setters and toString
-    public void setRating(double rating) {
+    /**
+     * Adds the rating in the rating list of the movie,
+     * then readjusts the total rating
+     */
+    public void setRating(final double rating) {
         this.rating.add(rating);
         super.setRating(this.getRating());
     }
 
-    @Override
-    public String toString() {
-        return "MovieInputData{" + "title= "
-                + super.getTitle() + "year= "
-                + super.getYear() + "duration= "
-                + duration + "cast {"
-                + super.getCast() + " }\n"
-                + "genres {" + super.getGenres() + " }\n ";
-    }
-
     ///////////////////////////////// Methods /////////////////////////////////
 
+    /**
+     * Iterates through the rating list and
+     * returns the total rating
+     */
     public double getRating() {
         if (rating != null) {
             double avg = 0.0;
-            for (double rate : rating)
+            for (double rate : rating) {
                 avg += rate;
+            }
 
-            if (rating.size() != 0)
+            if (rating.size() != 0) {
                 return avg / (double) rating.size();
+            }
         }
         return 0.0;
     }

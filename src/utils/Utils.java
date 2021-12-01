@@ -133,7 +133,11 @@ public final class Utils {
         return mapVideos;
     }
 
-    public static Actor returnActor(ActorInputData actorInput) {
+    /**
+     * Receives the actor's data from the input and copies it
+     * in the actor class
+     */
+    public static Actor returnActor(final ActorInputData actorInput) {
         Actor actor;
 
         String name = actorInput.getName();
@@ -145,7 +149,11 @@ public final class Utils {
         return actor;
     }
 
-    public static Movie returnMovie(MovieInputData movieInput) {
+    /**
+     * Receives the movie's data from the input and copies it
+     * in the movie class
+     */
+    public static Movie returnMovie(final MovieInputData movieInput) {
         Movie movie;
 
         String title = movieInput.getTitle();
@@ -158,7 +166,11 @@ public final class Utils {
         return movie;
     }
 
-    public static Serial returnSerial(SerialInputData serialInput) {
+    /**
+     * Receives the serial's data from the input and copies it
+     * in the serial class
+     */
+    public static Serial returnSerial(final SerialInputData serialInput) {
         Serial serial;
 
         String title = serialInput.getTitle();
@@ -172,7 +184,11 @@ public final class Utils {
         return serial;
     }
 
-    public static User returnUser(UserInputData userInput) {
+    /**
+     * Receives the user's data from the input and copies it
+     * in the user class
+     */
+    public static User returnUser(final UserInputData userInput) {
         User user;
 
         String username = userInput.getUsername();
@@ -182,5 +198,34 @@ public final class Utils {
 
         user = new User(username, subscription, history, favorite);
         return user;
+    }
+
+    /**
+     * Receives the genre as parameter and modifies it
+     */
+    public static String returnGenre(final Genre genre) {
+        String myGenre = genre.toString();
+        return switch (myGenre) {
+            case "TV_MOVIE" -> "TV Movie";
+            case "DRAMA" -> "Drama";
+            case "FANTASY" -> "Fantasy";
+            case "COMEDY" -> "Comedy";
+            case "FAMILY" -> "Family";
+            case "SCI_FI_FANTASY" -> "Sci-Fi & Fantasy";
+            case "CRIME" -> "Crime";
+            case "ANIMATION" -> "Animation";
+            case "SCIENCE_FICTION" -> "Science Fiction";
+            case "ACTION" -> "Action";
+            case "HORROR" -> "Horror";
+            case "MYSTERY" -> "Mystery";
+            case "WESTERN" -> "Western";
+            case "ADVENTURE" -> "Adventure";
+            case "ACTION_ADVENTURE" -> "Action & Adventure";
+            case "ROMANCE" -> "Romance";
+            case "THRILLER" -> "Thriller";
+            case "KIDS" -> "Kids";
+            case "HISTORY" -> "History";
+            default -> "";
+        };
     }
 }

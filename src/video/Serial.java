@@ -18,35 +18,29 @@ public class Serial extends Show {
         this.seasons = seasons;
     }
 
-    // Getters and toString
+    /**
+     * To copy the list, make sure to do:
+     * List<Season> newList = new ArrayList<>(serial.getSeasonList());
+     */
     public ArrayList<Season> getSeasons() {
         return seasons;
     }
 
-    public void setRating(double rating, int season) {
-        // We retrieve the season from the list of seasons
+    /**
+     * It retrieves the season from the season list, adds the rating
+     * to the season's rating list and the recalculates the total rating
+     */
+    public void setRating(final double rating, final int season) {
         Season toRate = seasons.get(season - 1);
-
-        // We add the rating to the season list
         toRate.getRatings().add(rating);
-
         super.setRating(this.getRating());
-    }
-
-    @Override
-    public String toString() {
-        return "SerialInputData{" + " title= "
-                + super.getTitle() + " " + " year= "
-                + super.getYear() + " cast {"
-                + super.getCast() + " }\n" + " genres {"
-                + super.getGenres() + " }\n "
-                + " numberSeason= " + numberOfSeasons
-                + ", seasons=" + seasons + "\n\n" + '}';
     }
 
     ///////////////////////////////// Methods /////////////////////////////////
 
-    // Calculates the rating for all the seasons
+    /**
+     * Calculates the rating for all the seasons (total rating)
+     */
     public double getRating() {
         double finalRating = 0.0;
 
@@ -54,23 +48,28 @@ public class Serial extends Show {
         double count = 0.0;
         for (var season : seasons) {
             List<Double> ratings = season.getRatings();
-            if(ratings.size() == 0)
-                count ++;
+            if (ratings.size() == 0) {
+                count++;
+            }
             for (Double rating : ratings) {
                 avg += rating;
                 count++;
             }
         }
-        if (count > 0)
+        if (count > 0) {
             finalRating = avg / count;
+        }
         return finalRating;
     }
 
-    // Returns the duration of all seasons
+    /**
+     * Returns the duration of all seasons
+     */
     public int getDuration() {
         int duration = 0;
-        for (var season : seasons)
+        for (var season : seasons) {
             duration += season.getDuration();
+        }
         return duration;
     }
 }

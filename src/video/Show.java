@@ -13,7 +13,6 @@ public abstract class Show {
     protected int duration;
     private double rating;
 
-    // Constructor
     public Show(final String title, final int year,
                 final ArrayList<String> cast,
                 final ArrayList<String> genres) {
@@ -24,60 +23,87 @@ public abstract class Show {
         this.rating = 0.0;
     }
 
-    // Getters
-
+    /**
+     * Returns the duration of the show
+     */
     public int getDuration() {
         return duration;
     }
 
+    /**
+     * Returns the title of the show
+     */
     public final String getTitle() {
         return title;
     }
 
+    /**
+     * Returns the year of the show
+     */
     public final int getYear() {
         return year;
     }
 
+    /**
+     * Returns the cast of the show
+     */
     public final ArrayList<String> getCast() {
         return cast;
     }
 
+    /**
+     * Returns the genres of the show
+     */
     public final ArrayList<String> getGenres() {
         return genres;
     }
 
+    /**
+     * Returns the total rating of the show
+     */
     public double getRating() {
         return rating;
     }
 
-    // Setters
-    public void setRating(double finalRating) {
+    /**
+     * Sets the total rating of the show
+     */
+    public void setRating(final double finalRating) {
         this.rating = finalRating;
     }
 
-    // Methods for Queries
+    //////////////////////////////// Queries ////////////////////////////////
 
-    // Iterates through the user list and checks
-    // how many users have the show set as favorite
-    public int getFavorite(UserList userList) {
+    /**
+     * Iterates through the user list and checks
+     * how many users have set the show as favorite
+     */
+    public int getFavorite(final UserList userList) {
         int count = 0;
-        for (User user : userList.getUserList())
-            for (var movie : user.getFavoriteMovies())
-                if (movie.equals(this.getTitle()))
+        for (User user : userList.getUserList()) {
+            for (var movie : user.getFavoriteMovies()) {
+                if (movie.equals(this.getTitle())) {
                     count++;
+                }
+            }
+        }
         return count;
     }
 
-    // Iterates through the user list and checks
-    // if the show is present in the user's history.
-    // If it is, it increments the number of views with the
-    // number of times the user watched the show
-    public int getViews(UserList userList) {
+    /**
+     * Iterates through the user list and checks
+     * if the show is present in the user's history.
+     * If it is, it increments the number of views with the
+     * number of times the user watched the show
+     */
+    public int getViews(final UserList userList) {
         int noOfViews = 0;
         for (var user : userList.getUserList()) {
-            for (String showName : user.getHistory().keySet())
-                if(showName.equals(this.getTitle()))
+            for (String showName : user.getHistory().keySet()) {
+                if (showName.equals(this.getTitle())) {
                     noOfViews += user.getHistory().get(showName);
+                }
+            }
         }
         return noOfViews;
     }
