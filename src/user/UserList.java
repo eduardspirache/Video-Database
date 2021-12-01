@@ -66,7 +66,7 @@ public class UserList {
             });
         }
         if (n < sorted.size())
-            return sorted.subList(0, n - 1);
+            return sorted.subList(0, n);
         else
             return sorted;
     }
