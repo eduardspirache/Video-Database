@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Actor {
     private String name;
@@ -110,13 +112,12 @@ public final class Actor {
     public boolean filterDescription(List<String> words) {
         int count = 0;
         for (String word : words) {
-            if (getCareerDescription().toLowerCase()
-                    .contains(word.toLowerCase())) {
+            Pattern pattern = Pattern.compile("\\b" + word + "\\b", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(getCareerDescription());
+            if (matcher.find()) {
                 count++;
             }
         }
-        if(count == words.size())
-            System.out.println(name);
         return count == words.size();
     }
 }

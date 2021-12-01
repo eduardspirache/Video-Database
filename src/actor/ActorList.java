@@ -95,17 +95,7 @@ public class ActorList {
     public List<Actor> sortByDescription(String sortType,
                                          List<String> words) {
         List<Actor> sorted = new ArrayList<>(actorList);
-
-//        System.out.println("---------START-----------");
-//        for(var actor : sorted)
-//            System.out.println(actor.getName() + " " + actor.getCareerDescription());
-
         sorted.removeIf(a -> !a.filterDescription(words));
-
-//        System.out.println("------------IIII----------");
-//        for(var actor : sorted)
-//            System.out.println(actor.getName() + " " + actor.getCareerDescription());
-
         if (sortType.equals(ASCENDING)) {
             sorted.sort(Comparator.comparing(Actor::getName));
         } else {
