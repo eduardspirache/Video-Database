@@ -115,6 +115,8 @@ public final class Actor {
                 count++;
             }
         }
+        if(count == words.size())
+            System.out.println(name);
         return count == words.size();
     }
 }
