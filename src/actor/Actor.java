@@ -6,14 +6,12 @@ import video.ShowList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Actor {
     private String name;
-    private String careerDescription;
-    private Double rating;
+    private final String careerDescription;
     private ArrayList<String> filmography;
     private final Map<ActorsAwards, Integer> awards;
 
@@ -25,7 +23,6 @@ public final class Actor {
         this.careerDescription = careerDescription;
         this.filmography = filmography;
         this.awards = awards;
-        this.rating = 0.0;
     }
 
     // Getters and toString
@@ -51,14 +48,6 @@ public final class Actor {
 
     public String getCareerDescription() {
         return careerDescription;
-    }
-
-    public void setCareerDescription(final String careerDescription) {
-        this.careerDescription = careerDescription;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
     }
 
     @Override

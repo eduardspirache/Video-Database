@@ -4,8 +4,6 @@ import user.User;
 import user.UserList;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Show {
     private final String title;

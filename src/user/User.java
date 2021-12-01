@@ -1,6 +1,5 @@
 package user;
 
-import entertainment.Season;
 import video.*;
 
 import java.util.*;
@@ -123,9 +122,7 @@ public class User {
 
     public String bestUnseen(ShowList shows) {
         List<Show> sorted = new ArrayList<>(shows.getShowList());
-        sorted.sort((a, b) -> {
-            return Double.compare(b.getRating(), a.getRating());
-        });
+        sorted.sort((a, b) -> Double.compare(b.getRating(), a.getRating()));
 
         for (var video : sorted)
             if (!history.containsKey(video.getTitle()))

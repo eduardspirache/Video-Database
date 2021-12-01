@@ -19,10 +19,6 @@ public class Serial extends Show {
     }
 
     // Getters and toString
-    public int getNumberOfSeasons() {
-        return numberOfSeasons;
-    }
-
     public ArrayList<Season> getSeasons() {
         return seasons;
     }
