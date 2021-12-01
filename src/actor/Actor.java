@@ -59,27 +59,37 @@ public final class Actor {
                 + ", filmography=" + filmography + '}';
     }
 
-    // Methods for Queries
-    public Double getRating(ShowList showList) {
+    //////////////////////////////// Queries ////////////////////////////////
+
+    /**
+     *  Calculates the rating of an actor based on
+     * the rating of the movies he played in.
+     */
+    public Double getRating(final ShowList showList) {
         double newRating = 0.0;
         double count = 0.0;
         List<Show> list = new ArrayList<>(showList.getShowList());
         for (var film : filmography) {
-            for (var show : list)
+            for (var show : list) {
                 if (show.getTitle().equals(film) && show.getRating() > 0) {
                     newRating += show.getRating();
                     count++;
                 }
+            }
+
         }
-        if (count != 0)
+        if (count != 0) {
             return newRating / count;
+        }
         return 0.0;
     }
 
-    // Returns the number of searched awards
-    // if it doesn't contain all the awards we searched
-    // it returns zero
-    public int noOfAwards(List<String> searchedAwards) {
+    /**
+     *  Returns the number of searched awards
+     * if it doesn't contain all the awards we searched
+     * it returns zero
+     */
+    public int noOfAwards(final List<String> searchedAwards) {
         int count = 0;
         for (String searchedAward : searchedAwards) {
             for (ActorsAwards actorAward : awards.keySet()) {
@@ -93,12 +103,17 @@ public final class Actor {
             sumAwards += awards.get(award);
         }
 
-        if (count == searchedAwards.size())
+        if (count == searchedAwards.size()) {
             return sumAwards;
+        }
         return 0;
     }
 
-    public boolean filterDescription(List<String> words) {
+    /**
+     *  Checks if the description contains all the
+     * words from the list.
+     */
+    public boolean filterDescription(final List<String> words) {
         int count = 0;
         for (String word : words) {
             Pattern pattern = Pattern.compile("\\b" + word + "\\b",
