@@ -74,7 +74,7 @@ public final class Actor {
     public Double getRating(ShowList showList) {
         double newRating = 0.0;
         double count = 0.0;
-        List<Show> list = showList.getShowList();
+        List<Show> list = new ArrayList<>(showList.getShowList());
         for (var film : filmography) {
             for (var show : list)
                 if (show.getTitle().equals(film) && show.getRating() > 0) {
@@ -104,7 +104,7 @@ public final class Actor {
             sumAwards += awards.get(award);
         }
 
-        if(count == searchedAwards.size())
+        if (count == searchedAwards.size())
             return sumAwards;
         return 0;
     }
@@ -112,7 +112,8 @@ public final class Actor {
     public boolean filterDescription(List<String> words) {
         int count = 0;
         for (String word : words) {
-            Pattern pattern = Pattern.compile("\\b" + word + "\\b", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("\\b" + word + "\\b",
+                    Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(getCareerDescription());
             if (matcher.find()) {
                 count++;

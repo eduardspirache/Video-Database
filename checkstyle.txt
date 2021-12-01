@@ -8,7 +8,6 @@ Starting audit...
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\Actor.java:93:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\Actor.java:93:27: Parameter searchedAwards should be final. [FinalParameters]
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\Actor.java:107:9: 'if' construct must use '{}'s. [NeedBraces]
-[ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\Actor.java:107:9: 'if' is not followed by whitespace. [WhitespaceAround]
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\Actor.java:112:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\Actor.java:112:38: Parameter words should be final. [FinalParameters]
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\actor\ActorList.java:15:22: Parameter actorList should be final. [FinalParameters]
@@ -297,4 +296,4 @@ Starting audit...
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\video\ShowList.java:146:13: 'for' construct must use '{}'s. [NeedBraces]
 [ERROR] C:\Users\edwar\Desktop\Diverse\Facultate\POO-lab\VideosDB\.\src\video\ShowList.java:147:17: 'if' construct must use '{}'s. [NeedBraces]
 Audit done.
-Checkstyle ends with 297 errors.
+Checkstyle ends with 296 errors.

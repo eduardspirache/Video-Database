@@ -122,7 +122,7 @@ public class User {
     }
 
     public String bestUnseen(ShowList shows) {
-        List<Show> sorted = shows.getShowList();
+        List<Show> sorted = new ArrayList<>(shows.getShowList());
         sorted.sort((a, b) -> {
             return Double.compare(b.getRating(), a.getRating());
         });
@@ -160,7 +160,7 @@ public class User {
 
     public String unseenGenre(ShowList shows, String genre) {
         if (getSubscriptionType().equals(PREMIUM)) {
-            List<Show> showList = shows.getShowList();
+            List<Show> showList = new ArrayList<>(shows.getShowList());
             showList.sort((a, b) -> {
                 if(a.getRating() != b.getRating())
                     return Double.compare(b.getRating(), a.getRating());
