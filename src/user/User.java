@@ -158,22 +158,22 @@ public class User {
         return "FavoriteRecommendation cannot be applied!";
     }
 
-    public String unseenGenre(ShowList shows, String genre) {
+    public String unseenGenre(ShowList showList, String genre) {
         if (getSubscriptionType().equals(PREMIUM)) {
-            List<Show> showList = new ArrayList<>(shows.getShowList());
-            showList.sort((a, b) -> {
+            List<Show> shows = new ArrayList<>(showList.getShowList());
+            shows.sort((a, b) -> {
                 if(a.getRating() != b.getRating())
-                    return Double.compare(b.getRating(), a.getRating());
+                    return Double.compare(a.getRating(), b.getRating());
                 return a.getTitle().compareTo(b.getTitle());
             });
             // We remove from the list all the shows
             // that are from a different genre
-            showList.removeIf(a -> !a.getGenres().contains(genre));
+            shows.removeIf(a -> !a.getGenres().contains(genre));
             // We remove the shows that the user has already seen
-            showList.removeIf(show -> history.containsKey(show.getTitle()));
-            if (showList.size() != 0) {
+            shows.removeIf(show -> history.containsKey(show.getTitle()));
+            if (shows.size() != 0) {
                 List<String> titles = new ArrayList<>();
-                for (var show : showList)
+                for (var show : shows)
                     titles.add(show.getTitle());
                 return "SearchRecommendation result: " + titles;
             }
