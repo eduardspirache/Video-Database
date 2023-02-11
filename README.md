@@ -2,7 +2,7 @@
 
 Developed a simplified platform for movie & series information with personalized recommendations. Utilized OOP concepts such as inheritance, aggregation, polymorphism, and abstraction. Practiced Java programming and emphasized code quality for design and structure. Used checkstyle for code style compliance. <br>
 
-<h1> Implementation <h1>
+<h1> Implementation </h1>
 
 The implemented platform simulates actions that users can perform on a movie viewing platform: ratings, movie viewing, searches, recommendations, etc. <br>
 
